@@ -1,6 +1,17 @@
 import React, { Component } from "react";
 import './App.css';
 
+const makeCheckbox = (
+    <div className = "form-check">
+      <label>
+        <input type="checkbox"
+          name = "chkA.P.C."
+          value = "A.P.C." />
+        A.P.C.
+      </label>
+    </div>
+);
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -28,17 +39,7 @@ class App extends Component {
             <h1>Stuff Alert!</h1>
             <fieldset>
               <legend>Brands</legend>
-                <div className="form-check">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="react-tips"
-                      value="A.P.C."
-                      className="form-check-input"
-                    />
-                    A.P.C.
-                  </label>
-                </div>
+                {makeCheckbox}
                 <div className="form-check">
                   <label>
                     <input
