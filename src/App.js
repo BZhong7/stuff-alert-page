@@ -1,243 +1,112 @@
 import React, { Component } from "react";
-import './App.css';
+import Checkbox from "./Checkbox";
 
-const makeCheckbox = (
-    <div className = "form-check">
-      <label>
-        <input type="checkbox"
-          name = "chkA.P.C."
-          value = "A.P.C." />
-        A.P.C.
-      </label>
-    </div>
-);
+const BRANDS = ["A.P.R.", "Arpenteur", "No Nationality"];
+const SIZES = [
+    "24", "25", "26", "27", "28", "29",
+    "30", "31", "32", "33", "34", "35", "36", "37", "38"
+    ];
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedOption: "28"
-    };
-  }
+  state = {
+    checkboxes: BRANDS.reduce(
+      (options, option) => ({
+        ...options,
+        [option]: false
+      }),
+      {}
+    )
+  };
 
-  handleOptionChange = changeEvent => {
-    this.setState({
-      selectedOption: changeEvent.target.value
+  selectAllCheckboxes = isSelected => {
+    Object.keys(this.state.checkboxes).forEach(checkbox => {
+      // BONUS: Can you explain why we pass updater function to setState instead of an object?
+      this.setState(prevState => ({
+        checkboxes: {
+          ...prevState.checkboxes,
+          [checkbox]: isSelected
+        }
+      }));
     });
+  };
+
+  selectAll = () => this.selectAllCheckboxes(true);
+
+  deselectAll = () => this.selectAllCheckboxes(false);
+
+  handleCheckboxChange = changeEvent => {
+    const { name } = changeEvent.target;
+
+    this.setState(prevState => ({
+      checkboxes: {
+        ...prevState.checkboxes,
+        [name]: !prevState.checkboxes[name]
+      }
+    }));
   };
 
   handleFormSubmit = formSubmitEvent => {
     formSubmitEvent.preventDefault();
 
-    console.log("You have submitted:", this.state.selectedOption);
+    Object.keys(this.state.checkboxes)
+      .filter(checkbox => this.state.checkboxes[checkbox])
+      .forEach(checkbox => {
+        console.log(checkbox, "is selected.");
+      });
   };
 
+  createCheckbox = option => (
+    <Checkbox
+      label={option}
+      isSelected={this.state.checkboxes[option]}
+      onCheckboxChange={this.handleCheckboxChange}
+      key={option}
+    />
+  );
+
+  createBrandCheckboxes = () => BRANDS.map(this.createCheckbox);
+  createSizeCheckboxes = () => SIZES.map(this.createCheckbox);
 
   render() {
     return (
-        <form onSubmit={this.handleFormSubmit}>
-            <h1>Stuff Alert!</h1>
-            <fieldset>
-              <legend>Brands</legend>
-                {makeCheckbox}
-                <div className="form-check">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="react-tips"
-                      value="Arpenteur"
-                      className="form-check-input"
-                    />
-                    Arpenteur
-                  </label>
-                </div>
-                <div className="form-check">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="react-tips"
-                      value="No Nationality"
-                      className="form-check-input"
-                    />
-                    No Nationality
-                  </label>
-                </div>
-            </fieldset>
-            <fieldset>
-              <legend>Sizes</legend>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="24"
-                   className="form-check-input"
-                  />
-                  Size 24
-                </label>
+      <div className="container">
+        <div className="row mt-5">
+          <div className="col-sm-12">
+            <form onSubmit={this.handleFormSubmit}>
+              <h1>Stuff Alert!</h1>
+                <fieldset>
+                  <legend>Brands</legend>
+                    {this.createBrandCheckboxes()}
+                </fieldset>
+                <fieldset>
+                  <legend>Sizes</legend>
+                    {this.createSizeCheckboxes()}
+                </fieldset>
+
+              <div className="form-group mt-2">
+                <button
+                  type="button"
+                  className="btn btn-outline-primary mr-2"
+                  onClick={this.selectAll}
+                >
+                  Select All
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-primary mr-2"
+                  onClick={this.deselectAll}
+                >
+                  Deselect All
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Save
+                </button>
               </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="25"
-                   className="form-check-input"
-                  />
-                  Size 25
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="26"
-                   className="form-check-input"
-                  />
-                  Size 26
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="27"
-                   className="form-check-input"
-                  />
-                  Size 27
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="28"
-                    className="form-check-input"
-                  />
-                  Size 28
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="29"
-                   className="form-check-input"
-                  />
-                  Size 29
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="30"
-                   className="form-check-input"
-                  />
-                  Size 30
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="31"
-                   className="form-check-input"
-                  />
-                  Size 31
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="32"
-                   className="form-check-input"
-                  />
-                  Size 32
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="33"
-                   className="form-check-input"
-                  />
-                  Size 33
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="34"
-                   className="form-check-input"
-                  />
-                  Size 34
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="35"
-                   className="form-check-input"
-                  />
-                  Size 35
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="36"
-                   className="form-check-input"
-                  />
-                  Size 36
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="37"
-                   className="form-check-input"
-                  />
-                  Size 37
-                </label>
-              </div>
-              <div className="form-check">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="react-tips"
-                    value="38"
-                   className="form-check-input"
-                  />
-                  Size 38
-                </label>
-              </div>
-              <div className="form-group">
-              </div>
-            </fieldset>
-            <button className="btn btn-primary mt-2" type="submit">
-                Submit
-            </button>
-        </form>
-   );
+            </form>
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 
