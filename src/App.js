@@ -15,6 +15,13 @@ class App extends Component {
         [option]: false
       }),
       {}
+    ),
+    checkboxes: SIZES.reduce(
+      (options, option) => ({
+        ...options,
+        [option]: false
+      }),
+      {}
     )
   };
 
@@ -53,6 +60,7 @@ class App extends Component {
       .forEach(checkbox => {
         console.log(checkbox, "is selected.");
       });
+    console.log(JSON.stringify(this.state.checkboxes));
   };
 
   createCheckbox = option => (
