@@ -6,17 +6,12 @@ const SIZES = [
     "24", "25", "26", "27", "28", "29",
     "30", "31", "32", "33", "34", "35", "36", "37", "38"
     ];
+const CLOTHES = ["Shirts", "Shoes", "Pants"];
+const OPTIONS = BRANDS.concat(SIZES, CLOTHES);
 
 class App extends Component {
   state = {
-    checkboxes: BRANDS.reduce(
-      (options, option) => ({
-        ...options,
-        [option]: false
-      }),
-      {}
-    ),
-    checkboxes: SIZES.reduce(
+    checkboxes: OPTIONS.reduce(
       (options, option) => ({
         ...options,
         [option]: false
@@ -74,6 +69,7 @@ class App extends Component {
 
   createBrandCheckboxes = () => BRANDS.map(this.createCheckbox);
   createSizeCheckboxes = () => SIZES.map(this.createCheckbox);
+  createClothesCheckboxes = () => CLOTHES.map(this.createCheckbox);
 
   render() {
     return (
@@ -90,7 +86,10 @@ class App extends Component {
                   <legend>Sizes</legend>
                     {this.createSizeCheckboxes()}
                 </fieldset>
-
+                <fieldset>
+                  <legend>Clothes</legend>
+                    {this.createClothesCheckboxes()}
+                </fieldset>
               <div className="form-group mt-2">
                 <button
                   type="button"
