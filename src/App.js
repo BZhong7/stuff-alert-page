@@ -4,10 +4,12 @@ import Checkbox from "./Checkbox";
 const BRANDS = ["A.P.R.", "Arpenteur", "No Nationality"];
 const SIZES = [
     "24", "25", "26", "27", "28", "29",
-    "30", "31", "32", "33", "34", "35", "36", "37", "38"
-    ];
+    "30", "31", "32", "33", "34", "35", "36", "37", "38",
+    "XS", "S", "M", "L", "XL", "XXL"];
 const CLOTHES = ["Shirts", "Shoes", "Pants"];
 const OPTIONS = BRANDS.concat(SIZES, CLOTHES);
+
+let outputData = new Map()
 
 class App extends Component {
   state = {
@@ -54,8 +56,10 @@ class App extends Component {
       .filter(checkbox => this.state.checkboxes[checkbox])
       .forEach(checkbox => {
         console.log(checkbox, "is selected.");
+        outputData.set(checkbox);
       });
-    console.log(JSON.stringify(this.state.checkboxes));
+    for (let [key, value] of outputData) {
+        console.log(JSON.stringify(key + ' = ' + value)); }
   };
 
   createCheckbox = option => (
