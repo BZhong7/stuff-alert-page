@@ -9,8 +9,32 @@ const SIZES = [
 const CLOTHES = ["Shirts", "Shoes", "Pants"];
 const OPTIONS = BRANDS.concat(SIZES, CLOTHES);
 
-let outputData = new Map()
+let selectedOptions = [];
+let jsonData = {};
 
+function findOption(dataArr) {
+    let sortJson = {};
+    let brandsArr = [];
+    let sizesArr = [];
+    let clothesArr = [];
+
+    var value;
+    
+    for (value of dataArr) {
+        if(BRANDS.includes(value))
+            brandsArr.push(value);
+        else if (SIZES.includes(value))
+            sizesArr.push(value);
+        else if (CLOTHES.includes(value))
+            clothesArr.push(value);
+    }
+    
+    sortJson["brands"] = brandsArr;
+    sortJson["sizes"] = sizesArr;
+    sortJson["clothes"] = clothesArr;
+
+    return sortJson;
+}
 class App extends Component {
   state = {
     checkboxes: OPTIONS.reduce(
@@ -56,10 +80,10 @@ class App extends Component {
       .filter(checkbox => this.state.checkboxes[checkbox])
       .forEach(checkbox => {
         console.log(checkbox, "is selected.");
-        outputData.set(checkbox);
+        selectedOptions.push(checkbox);
       });
-    for (let [key, value] of outputData) {
-        console.log(JSON.stringify(key + ' = ' + value)); }
+    jsonData = findOption(selectedOptions);
+    console.log(JSON.stringify(jsonData));
   };
 
   createCheckbox = option => (
