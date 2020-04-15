@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Checkbox from "./Checkbox";
 
-const BRANDS = ["A.P.R.", "Arpenteur", "No Nationality"];
+const BRANDS = ["A.P.C.", "Arpenteur", "No Nationality"];
 const SIZES = [
     "24", "25", "26", "27", "28", "29",
     "30", "31", "32", "33", "34", "35", "36", "37", "38",
