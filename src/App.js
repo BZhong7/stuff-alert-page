@@ -1,21 +1,27 @@
 import React, { Component } from "react";
 import Checkbox from "./Checkbox";
 
-const BRANDS = ["A.P.R.", "Arpenteur", "No Nationality"];
-const SIZES = [
+const BRANDS = ["A.P.C.", "Arpenteur", "No Nationality"];
+const PANTSIZES = [
     "24", "25", "26", "27", "28", "29",
-    "30", "31", "32", "33", "34", "35", "36", "37", "38",
-    "XS", "S", "M", "L", "XL", "XXL"];
+    "30", "31", "32", "33", "34", "35", "36", "37", "38"];
+const SHIRTSIZES = ["XS", "S", "M", "L", "XL", "XXL"];
+const SHOESIZES =  [
+    "5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5",
+    "9.0", "9.5", "10.0", "10.5", "11.0", "11.5", "12.0"];
 const CLOTHES = ["Shirts", "Shoes", "Pants"];
-const OPTIONS = BRANDS.concat(SIZES, CLOTHES);
+const OPTIONS = BRANDS.concat(PANTSIZES, SHIRTSIZES, SHOESIZES, CLOTHES);
 
 let selectedOptions = [];
 let jsonData = {};
 
+
 function findOption(dataArr) {
     let sortJson = {};
     let brandsArr = [];
-    let sizesArr = [];
+    let pantSizeArr = [];
+    let shirtSizeArr = [];
+    let shoeSizeArr = [];
     let clothesArr = [];
 
     var value;
@@ -23,14 +29,20 @@ function findOption(dataArr) {
     for (value of dataArr) {
         if(BRANDS.includes(value))
             brandsArr.push(value);
-        else if (SIZES.includes(value))
-            sizesArr.push(value);
+        else if (PANTSIZES.includes(value))
+            pantSizeArr.push(value);
+        else if (SHIRTSIZES.includes(value))
+            shirtSizeArr.push(value);
+        else if (SHOESIZES.includes(value))
+            shoeSizeArr.push(value);
         else if (CLOTHES.includes(value))
             clothesArr.push(value);
     }
     
     sortJson["brands"] = brandsArr;
-    sortJson["sizes"] = sizesArr;
+    sortJson["pantSizes"] = pantSizeArr;
+    sortJson["shirtSizes"] = shirtSizeArr;
+    sortJson["shoeSizes"] = shoeSizeArr;
     sortJson["clothes"] = clothesArr;
 
     return sortJson;
@@ -96,8 +108,16 @@ class App extends Component {
   );
 
   createBrandCheckboxes = () => BRANDS.map(this.createCheckbox);
-  createSizeCheckboxes = () => SIZES.map(this.createCheckbox);
+  createPantSizeCheckboxes = () => PANTSIZES.map(this.createCheckbox);
+  createShirtSizeCheckboxes = () => SHIRTSIZES.map(this.createCheckbox);
+  createShoeSizeCheckboxes = () => SHOESIZES.map(this.createCheckbox);
   createClothesCheckboxes = () => CLOTHES.map(this.createCheckbox);
+
+  makeCall = () => (
+      fetch('https://ctq4nhnb50.execute-api.us-east-2.amazonaws.com/beta/find-item?brands=A.P.C.&brands=Arpenteur&&brands=No%20Nationality&tags=Pants&tags=Shoes&tags=Shirts&pantsSize=29&pantsSize=33&shoeSize=10.5')
+      .then(results => results.json())
+      .catch(error => console.log(error))
+  );
 
   render() {
     return (
@@ -111,8 +131,16 @@ class App extends Component {
                     {this.createBrandCheckboxes()}
                 </fieldset>
                 <fieldset>
-                  <legend>Sizes</legend>
-                    {this.createSizeCheckboxes()}
+                  <legend>Pants Sizes</legend>
+                    {this.createPantSizeCheckboxes()}
+                </fieldset>
+                <fieldset>
+                  <legend>Shirt Sizes</legend>
+                    {this.createShirtSizeCheckboxes()}
+                </fieldset>
+                <fieldset>
+                  <legend>Shoe Sizes</legend>
+                    {this.createShoeSizeCheckboxes()}
                 </fieldset>
                 <fieldset>
                   <legend>Clothes</legend>
@@ -133,8 +161,12 @@ class App extends Component {
                 >
                   Deselect All
                 </button>
-                <button type="submit" className="btn btn-primary">
-                  Save
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  onClick={this.makeCall}
+                >
+                  Submit
                 </button>
               </div>
             </form>
